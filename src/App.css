@@ -1,3 +1,5 @@
+@import  url(https://fonts.googleapis.com/css?family=Montserrat);
+$button-color: #2D3142;
 .App {
   text-align: center;
 }
@@ -8,18 +10,53 @@
 }
 
 .App-header {
-  background-color: #222;
+  background-color: #003366;
   height: 150px;
   padding: 20px;
   color: white;
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 4em;
 }
 
 .App-intro {
   font-size: large;
+}
+
+.Add-button {
+  color: white;
+  border-radius: 4px;
+  background-color: #003366;
+  box-sizing: large;
+  transition-duration: .5s;
+
+
+}
+
+.Add-button:hover {
+    border: 2px solid orangered;
+    color:orangered;
+    background-color: white;
+        
+}
+
+
+.Start-button {
+  color: white;
+  border-radius: 4px;
+  background-color: #003366;
+  box-sizing: large;
+  transition-duration: .5s;
+
+
+}
+
+.Start-button:hover {
+    border: 2px solid orangered;
+    color:orangered;
+    background-color: white;
+        
 }
 
 @keyframes App-logo-spin {

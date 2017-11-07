@@ -1,71 +1,85 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import ToggleSwitch from '@trendmicro/react-toggle-switch';
+import {
+    Link,
+    Route, 
+    NavLink, 
+    HashRouter 
+} from "react-router-dom";
+import Scoresheet from "./Scoresheet";
 
-//good code for coding up input matrix
-/*class NameForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {value: ''};
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+//https://goshakkk.name/array-form-inputs/ full credit to this guy for the idea and code
+class IncorporationForm extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      name: '',
+      shareholders: [{ name: '' }],
+      switched: false,
+    };
   }
-
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  
+  handleNameChange = (evt) => {
+    this.setState({ name: evt.target.value });
   }
-
-  handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
+  
+  handleShareholderNameChange = (idx) => (evt) => {
+    const newShareholders = this.state.shareholders.map((shareholder, sidx) => {
+      if (idx !== sidx) return shareholder;
+      return { ...shareholder, name: evt.target.value };
+    });
+    
+    this.setState({ shareholders: newShareholders });
   }
+  
+  handleSubmit = (evt) => {
+    const { name, shareholders } = this.state;
+    alert(`Incorporated: ${name} with ${shareholders.length} players`);
+  }
+  
+  handleAddShareholder = () => {
+    this.setState({ shareholders: this.state.shareholders.concat([{ name: '' }]) });
+    
+  }
+  
+  handleRemoveShareholder = (idx) => () => {
+    this.setState({ shareholders: this.state.shareholders.filter((s, sidx) => idx !== sidx) });
+  }
+  
 
-  render() {
+  
+  render() {    
     return (
       <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
+      
+        <h4>Players</h4>
+        <ToggleSwitch
+            checked
+            ref={(node) => {
+                this.toggleSwitch = node;
+            }}
+        />
+        {this.state.shareholders.map((shareholder, idx) => (
+          <div className="shareholder">
+            <input
+              type="text"
+              placeholder={`Player {idx + 1} name`}
+              value={shareholder.name}
+              onChange={this.handleShareholderNameChange(idx)}
+            />
+            <button type="button" onClick={this.handleRemoveShareholder(idx)} className="small">-</button>
+          </div>
+        ))}
+        <button type="button" onClick={this.handleAddShareholder} className="Add-button">Add Player</button>
+        <button type = "button" onClick={this.handleSubmit} className="Start-button"><Link to='/scoresheet' activeStyle={{ color: 'white' }}>Start Game</Link></button>
       </form>
-    );
-  }
+    )
+    }
 }
 
-*/
-
-class NumberOfPlayers extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {value: ''};
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    this.setState({value: event.target.value});
-  }
-
-  handleSubmit(event) {
-    alert('A number was submitted: ' + this.state.value);
-    event.preventDefault();
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="number" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-    );
-  }
-}
 
 class App extends Component {
   render() {
@@ -74,7 +88,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Weaver Frisbee Golf App</h1>
         </header>
-        <NumberOfPlayers/>
+        <IncorporationForm/>
       </div>
     );
   }
